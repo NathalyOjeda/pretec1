@@ -1,3 +1,5 @@
+//CAMBIOS PARA LUCERO
+
 function mostrarAguinaldo() {
     var contenido = dameContenido("paginas/planillas/aguinaldo.php");
     $("#contenido-page").html(contenido);
