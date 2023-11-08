@@ -170,7 +170,7 @@ function buscarMinisterio() {
     }
 
     let filtro = {
-        'id_contrato' : $("#id_contrato").val(),
+        'id_contrato': $("#id_contrato").val(),
         'desde': fecha_desde,
         'hasta': fecha_hasta
     };
@@ -278,8 +278,8 @@ $(document).on("click", ".imprimir-ministerio", function (evt) {
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
 function generarPlanillaMinisterio() {
-    let fecha_desde = $("#desde").val() ;
-    let fecha_hasta = $("#hasta").val() ;
+    let fecha_desde = $("#desde").val();
+    let fecha_hasta = $("#hasta").val();
 
 
 
@@ -296,9 +296,9 @@ function generarPlanillaMinisterio() {
 //------------------------------------------------------------------------------
 function cargarGrillaMinisterio() {
 
-    
+
     let descuento = ejecutarAjax("controladores/ministerio.php",
-            "grilla=1" );
+            "grilla=1");
 //        console.log(descuento);
     if (descuento === "0") {
         $("#grilla_ministerio").html("NO HAY RESULTADOS");
@@ -307,7 +307,7 @@ function cargarGrillaMinisterio() {
         let fila = ``;
         let json_descuento = JSON.parse(descuento);
         json_descuento.map(function (item) {
-           fila += `<tr>`;
+            fila += `<tr>`;
             fila += `<td>${item.det_min_trab_id}</td>`;
             fila += `<td>${item.det_mjt_fe_pla}</td>`;
             fila += `<td>${item.personal}</td>`;
@@ -334,11 +334,67 @@ function cargarGrillaMinisterio() {
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
 function generarPlanillaMinisterio2() {
-    
-    
-    if($("#tipo_ministerio").val() === "1"){
-        
+
+
+    if ($("#tipo_ministerio").val() === "1") {
+
         open("paginas/planillas/imprimirPlanillaMinisterio.php");
     }
-        
+
+}
+//---------------------------------------------------------------------------
+//---------------------------------------------------------------------------
+//---------------------------------------------------------------------------
+function generarXMLPlanillaMinisterio2() {
+
+
+    if ($("#tipo_ministerio").val() === "1") {
+        xmlEmpleados();
+
+    }
+
+}
+
+
+function OBJtoXML(obj) {
+    var xml = '';
+    for (var prop in obj) {
+        xml += obj[prop] instanceof Array ? '' : "<" + prop + ">";
+        if (obj[prop] instanceof Array) {
+            for (var array in obj[prop]) {
+                xml += "<" + prop + ">";
+                xml += OBJtoXML(new Object(obj[prop][array]));
+                xml += "</" + prop + ">";
+            }
+        } else if (typeof obj[prop] == "object") {
+            xml += OBJtoXML(new Object(obj[prop]));
+        } else {
+            xml += obj[prop];
+        }
+        xml += obj[prop] instanceof Array ? '' : "</" + prop + ">";
+    }
+    var xml = xml.replace(/<\/?[0-9]{1,}>/g, '');
+    return xml
+}
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+function xmlEmpleados() {
+    let data = ejecutarAjax("controladores/ministerio.php", "paraxmlempleados=1");
+
+    let xml = (OBJtoXML(JSON.parse(data)));
+
+    let filename = 'people.xml';
+    let text = '<?xml version="1.0"?>'+xml;
+
+    let element = document.createElement('a');
+    element.setAttribute('href', 'data:text/xml;charset=utf-8,' + encodeURIComponent(text));
+    element.setAttribute('download', filename);
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
 }

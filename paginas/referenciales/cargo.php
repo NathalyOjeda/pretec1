@@ -6,8 +6,8 @@
     <hr> 
     <div class="row">
         <div class="col-md-5">
-            <label>Nombre del cargo</label>
-            <input type="text" class="form-control" id="cargo_descripcion" onkeypress="return soloTexto(event)">
+            <label>Descripción</label>
+            <input type="text" class="form-control" id="cargo_descripcion">
         </div>
         <div class="col-md-5">
             <label>Salario</label>
@@ -22,18 +22,18 @@
         </div>
         <div class="col-md-4">
             <label>Operaciones</label>
-            <button class="btn btn-success form-control" type="submit" onclick="guardarCargo(); return false;">Guardar</button>
+            <button class="btn btn-success form-control" onclick="guardarCargo(); return false;">Guardar</button>
         </div>
     </div>
     <hr> 
     <div class="row" id="tabla">
         <div class="col-md-6">
-            <label>Busqueda por nombre de cargo</label>
+            <label>Busqueda por nombre</label>
             <input type="text" class="form-control" id="b_nombre_cargo">
         </div>
         <div class="col-md-2">
             <label>.</label>
-            <button class="btn btn-primary form-control">Buscar</button>
+            <button class="btn btn-primary form-control" onclick="buscarCargo(); return false;">Buscar</button>
         </div>
         <div class="col-md-3">
             <label>.</label>

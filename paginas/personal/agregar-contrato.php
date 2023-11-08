@@ -1,24 +1,24 @@
 <input type="text" id="id_contrato" value="0" hidden>
 <h5>Agregar Contrato</h5>
 <hr>
-    <h6>Datos del empleado</h6>
+<h6>Persona</h6>
 <div class="row">
-    <div class="col-md-1">
+    <div class="col-md-2">
         <label>COD</label>
-        <input type="text" class="form-control" id="cod_empleado">
+        <input type="text" class="form-control" id="cod_curriculum">
     </div>
-    <div class="col-md-6">
-        <label>Nombre</label>
+    <div class="col-md-5">
+        <label>Nombre Apellido</label>
         <input type="text" class="form-control" readonly id="nombre_personal">
     </div>
-    
+   
     <div class="col-md-3">
         <label>Cédula</label>
         <input type="text" class="form-control" readonly id="cedula_personal">
     </div>
     <div class="col-md-2">
         <label>.</label>
-        <button class="btn btn-danger form-control cancelar-btn" onclick="cancelarPersonal(); return false;">Cancelar</button>
+        <button class="btn btn-danger form-control cancelar-btn" onclick="cancelarCurriculum(); return false;">Cancelar</button>
     </div>
    
 </div>
@@ -36,6 +36,12 @@
     </div>
     
    
+    <div class="col-md-3">
+        <label>Sucursal</label>
+        <select  id="sucursal_lst" class="form-control">
+           
+        </select>
+    </div>
     <div class="col-md-3">
         <label>Cargo</label>
         <select  id="cargo_lst" class="form-control ">
@@ -66,7 +72,7 @@
         </select>
     </div>
     
-    <div class="col-md-12">
+    <div class="col-md-12" hidden>
         <table class="table table-striped table-hover">
             <thead>
                 <tr>

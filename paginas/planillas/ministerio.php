@@ -21,15 +21,18 @@
     <hr> 
     <div class="container-fluid" id="contenido-ministerio2">
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-6">
                 <label>Tipo</label>
                 <select id="tipo_ministerio" class="form-control">
                     <option value="1">Empleados y Obreros</option>
                     <option value="2">Resumen General</option>
                 </select>
             </div>
-            <div class="col-md-4" style="margin-top: 25px;">
-                <button class="btn btn-success" onclick="generarPlanillaMinisterio2(); return false;">Generar Planilla</button>
+            <div class="col-md-3" style="margin-top: 25px;">
+                <button class="btn btn-success form-control" onclick="generarPlanillaMinisterio2(); return false;">Generar Planilla</button>
+            </div>
+            <div class="col-md-3" style="margin-top: 25px;">
+                <button class="btn btn-primary form-control" onclick="generarXMLPlanillaMinisterio2(); return false;">Generar XML</button>
             </div>
         </div>
     </div>

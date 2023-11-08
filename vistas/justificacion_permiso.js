@@ -1,219 +1,137 @@
-
-
-function mostrarJustificacionPermiso() {
-    var contenido = dameContenido("paginas/referenciales/justificacion_permiso.php");
+function mostrarJustificacionMovPermiso() {
+    var contenido = dameContenido("paginas/personal/justificacion_permiso.php");
     $("#contenido-page").html(contenido);
-    cargarTablaJustificacionPermiso();
+
+}
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+function mostrarAgregarJustificacionMovPermiso() {
+    var contenido = dameContenido("paginas/personal/agregar-justificacion.php");
+    $("#contenido-justificacion").html(contenido);
+    dameFechaActual("fecha");
+    cargarListaJustificacionPermiso("#justificacion_lst");
+
+}
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+function mostrarConsultarJustificacionMovPermiso() {
+    var contenido = dameContenido("paginas/personal/consultar-justificacion.php");
+    $("#contenido-justificacion").html(contenido);
 
 }
 
 //----------------------------------------------------------------------------
 //----------------------------------------------------------------------------
 //----------------------------------------------------------------------------
-
-
-function guardarJustificacionPermiso() {
-
+function guardarJustificacionMovPermiso() {
     var descripcion = "", activo = "";
 
     if ($("#id_justificacion_permiso").val() === '0') {
 
-        descripcion = $("#justificacion_permiso_descripcion").val();
-        activo = $("#justificacion_permiso_estado").val();
 
 
-
-
-        
-        /* Validación para verificar que la descripción no contenga números
-        if (!isNaN(descripcion) || descripcion.trim().length === 0) {
-            alert("La descripción debe contener solo letras y no estar vacía.");
-            $("#justificacion_permiso_descripcion").focus();
-            return;
-        }*/
-        //
-        if (!descripcion || descripcion.trim().length === 0) {
-            mensaje_dialogo_info("DEBE INGRESAR UNA DESCRIPCION" ,
-            "ATENCION");
-            $("#motivo_descripcion").focus();
+        if ($("#id_contrato").val() === "0") {
+            mensaje_dialogo_info_ERROR("Debes buscar un empleado por cedula", "ATENCION");
+            $("#cedula_b").focus();
             return;
 
         }
+        if ($("#justificacion_lst").val() === "0") {
+            mensaje_dialogo_info_ERROR("Debes seleccionar una justificación", "ATENCION");
+            return;
 
+        }
+        let fileInput = document.getElementById("file");
+        console.log(fileInput.files.length);
+        if (fileInput.files.length > 0) {
+            const file = fileInput.files[0];
+            const reader = new FileReader();
 
-        var lista = {
-            'descripcion': descripcion,
-            'estado': activo
-        };
+            reader.onload = function (e) {
+                const base64PDF = e.target.result.split(',')[1];
+//                    console.log("Contenido PDF en Base64: " + base64PDF);
+                var lista = {
+                    'fecha': $("#fecha").val(),
+                    'con_id': $("#id_contrato").val(),
+                    'jus_per_id': $("#justificacion_lst").val(),
+                    'observacion': $("#descripcion").val(),
+                    'file': ($("#file").val().length === 0) ? null : base64PDF,
+                    'estado': 1
+                };
 
+//                console.log("data:application/pdf;base64," + base64PDF);
 
-        var existe = ejecutarAjax("controladores/justificacion_permiso.php", "b_nombre_exacto=" + descripcion.trim());
-        if (existe === '0') {
-            let r = ejecutarAjax("controladores/justificacion_permiso.php", "guardar=" + JSON.stringify(lista));
-            console.log(r);
-            alertify.alert(
-                    'INFORMACION',
-                    'Guardado correctamente!',
-                    function ()
-                    {
-                        alertify.success('Guardado');
-                    });
+                let g = ejecutarAjax("controladores/justificacion.php",
+                        "guardar=" + JSON.stringify(lista));
+                console.log(g);
+//                mostrarPDF( base64PDF);
+                mensaje_dialogo_info("Guardado Correctamente", "ATENCION");
+                mostrarAgregarJustificacionMovPermiso();
 
+            };
+
+            reader.readAsDataURL(file);
         } else {
-            alertify.alert('WARNING', "El registro ya existe!");
-            return;
+            var lista = {
+                'fecha': $("#fecha").val(),
+                'con_id': $("#id_contrato").val(),
+                'jus_per_id': $("#justificacion_lst").val(),
+                'observacion': $("#descripcion").val(),
+                'file': ($("#file").val().length === 0) ? null : "",
+                'estado': 1
+            };
+
+//                console.log("data:application/pdf;base64," + base64PDF);
+
+            let g = ejecutarAjax("controladores/justificacion.php",
+                    "guardar=" + JSON.stringify(lista));
+            console.log(g);
+            mensaje_dialogo_info("Guardado Correctamente", "ATENCION");
+            mostrarAgregarJustificacionMovPermiso();
         }
 
 
-      
-
-    } else {
-
-        descripcion = $('.modal-editar-justificacion_permiso #justificacion_permiso_descripcion').val();
-        activo = $('.modal-editar-justificacion_permiso #justificacion_permiso_estado').val();
-
-        if (descripcion.trim().length === 0) {
-            mensaje_dialogo_info("DEBE INGRESAR LA DESCRIPCION", "ATENCION");
-            $('.modal-editar-justificacion_permiso #justificacion_permiso_descripcion').focus();
-            return;
-
-        }
-        var lista = {
-            'descripcion': descripcion,
-            'estado': activo,
-            'id_justificacion_permiso': $("#id_justificacion_permiso").val()
-        };
 
 
 
 
-        if ($("#nombre_antiguo_justificacion_permiso").val().trim() !== $(".modal-editar-justificacion_permiso #justificacion_permiso_descripcion").val().trim()) {
 
-            var existe = ejecutarAjax("controladores/justificacion_permiso.php", "b_nombre_exacto=" + descripcion.trim());
-
-            if (existe !== '0') {
-                alertify.alert('WARNING', "El registro ya existe!");
-                return;
-            } else {
-                ejecutarAjax("controladores/justificacion_permiso.php", "actualizar=" + JSON.stringify(lista));
-                $("#id_justificacion_permiso").val("0");
-
-                alertify.alert(
-                        'INFORMACION',
-                        'Actualizado correctamente!',
-                        function ()
-                        {
-                            alertify.success('Actualizado');
-                        });
-            }
-        } else {
-            ejecutarAjax("controladores/justificacion_permiso.php", "actualizar=" + JSON.stringify(lista));
-            $("#id_justificacion_permiso").val("0");
-            alertify.alert(
-                    'INFORMACION',
-                    'Actualizado correctamente!',
-                    function ()
-                    {
-                        alertify.success('Actualizado');
-                    });
-        }
 
 
 
 
     }
 
-
-    cargarTablaJustificacionPermiso();
-    limpiarCampoJustificacionPermiso();
-    $("#modal-generico").modal("hide");
+//    cargarTablaJustificacionMovPermiso();
+//    limpiarCampoJustificacionMovPermiso();
+//    $("#modal-generico").modal("hide");
 
 
 }
-//-------------------------------------------------------------------------------
-//-------------------------------------------------------------------------------
-//-------------------------------------------------------------------------------
-function cargarTablaJustificacionPermiso() {
-    var lista = ejecutarAjax("controladores/justificacion_permiso.php",
-            "dame_todo=1");
 
-    var fila = "";
-
-    if (lista === '0') {
-        fila = 'No hay registros';
-    } else {
-        var json_lista = JSON.parse(lista);
-        json_lista.map(function (item) {
-            fila += `<tr>`;
-            fila += `<td>${item.jus_per_id}</td>`;
-            fila += `<td>${item.just_per_de}</td>`;
-            fila += `<td>${item.estado}</td>`;
-            fila += `<td><button class='btn btn-warning editar-justificacion_permiso'>Editar</button>
-             <button class='btn btn-danger eliminar-justificacion_permiso'>Eliminar</button></td>`;
-            fila += `</tr>`;
-        });
-
-    }
-    $("#justificacion_permiso_tb").html(fila);
-}
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-function limpiarCampoJustificacionPermiso() {
+function limpiarCampoJustificacionMovPermiso() {
 
     $("#justificacion_permiso_descripcion").val("");
     $("#justificacion_permiso_estado").val("1");
 
 }
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-
-$(document).on("click", ".editar-justificacion_permiso", function (evt) {
-    var tr = $(this).closest("tr");
-    var id = $(tr).find("td").filter(":eq(0)").text();
-
-//    console.log(id);
-
-    var registro = ejecutarAjax("controladores/justificacion_permiso.php",
-            "id=" + id);
-
-    if (registro === '0') {
-
-    } else {
-        var json_color = JSON.parse(registro);
-
-        var modal = dameContenido("paginas/modal-generico.php");
-        var contenido = dameContenido("paginas/referenciales/justificacion_permiso.php");
-        $("#modal-generico").remove();
-        $("html").append(modal);
-        $("#modal-generico").addClass("modal-editar-justificacion_permiso");
-        $("#contenido-modal").html(contenido);
-
-        $(".modal-title").text("Editar Registro");
-        $(".modal-editar-justificacion_permiso #tabla").remove();
-
-
-        $(".modal-editar-justificacion_permiso #justificacion_permiso_descripcion").val(json_color[0]['just_per_de']);
-        $(".modal-editar-justificacion_permiso #justificacion_permiso_estado").val(json_color[0]['estado']);
-        $("#id_justificacion_permiso").val(json_color[0]['jus_per_id']);
-        $("#nombre_antiguo_justificacion_permiso").val(json_color[0]['just_per_de']);
-
-        $("#modal-generico").modal("show");
-
-    }
-});
 
 //----------------------------------------------------------------------------
 //----------------------------------------------------------------------------
 //----------------------------------------------------------------------------
-$(document).on("click", ".eliminar-justificacion_permiso", function (evt) {
+$(document).on("click", ".eliminar-justificacionmov", function (evt) {
     var tr = $(this).closest("tr");
     var id = $(tr).find("td").filter(":eq(0)").text();
     alertify.confirm('ATENCION', 'Desea eliminar el registro?',
             function () {
                 var r = ejecutarAjax
-                        ("controladores/justificacion_permiso.php",
+                        ("controladores/justificacion.php",
                                 "eliminar=" + id);
                 console.log(r);
                 if (r.includes("Cannot delete or update a parent row: a foreign key constraint fails")) {
@@ -223,7 +141,7 @@ $(document).on("click", ".eliminar-justificacion_permiso", function (evt) {
                 }
 
                 alertify.success('Eliminado');
-                cargarTablaJustificacionPermiso();
+                cargarTablaJustificacionMovPermiso();
             }
     , function () {
         alertify.error('Cancelado');
@@ -233,9 +151,10 @@ $(document).on("click", ".eliminar-justificacion_permiso", function (evt) {
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 
-$(document).on("keyup", "#b_nombre_justificacion_permiso", function (evt) {
+$(document).on("keyup", "#b_nombre_mov_justificacion_permiso", function (evt) {
     if (evt.keyCode === 13) {
-        var lista = ejecutarAjax("controladores/justificacion_permiso.php", "b_nombre=" + $(this).val().trim());
+        var lista = ejecutarAjax("controladores/justificacion.php",
+                "b_nombre=" + $(this).val().trim());
         console.log(lista);
         var fila = "";
 
@@ -244,17 +163,25 @@ $(document).on("keyup", "#b_nombre_justificacion_permiso", function (evt) {
         } else {
             var json_lista = JSON.parse(lista);
             json_lista.map(function (item) {
+                let b64 = item.file;
                 fila += `<tr>`;
-                fila += `<td>${item.jus_per_id}</td>`;
+                fila += `<td>${item.id_permiso_justif}</td>`;
+                fila += `<td>${item.personal}</td>`;
+                fila += `<td>${item.cedula}</td>`;
+                fila += `<td>${item.fecha}</td>`;
                 fila += `<td>${item.just_per_de}</td>`;
+                fila += `<td>${item.observacion}</td>`;
+                fila += `<td>${(item.file === "null") ? "NO HAY DOCUMENTOS" :
+                        `<button class="btn btn-primary" onclick="mostrarPDF(${item.id_permiso_justif}); return false;">Ver</button>`}</td>`;
                 fila += `<td>${item.estado}</td>`;
-                fila += `<td><button class='btn btn-warning editar-justificacion_permiso'>Editar</button>
-             <button class='btn btn-danger eliminar-justificacion_permiso'>Eliminar</button></td>`;
+                fila += `<td>
+             
+             <button class='btn btn-danger eliminar-justificacionmov'>Eliminar</button></td>`;
                 fila += `</tr>`;
             });
 
         }
-        $("#justificacion_permiso_tb").html(fila);
+        $("#justificacion_tb").html(fila);
     }
 
 });
@@ -264,7 +191,7 @@ $(document).on("keyup", "#b_nombre_justificacion_permiso", function (evt) {
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-function cargarListaJustificacionPermiso(componente) {
+function cargarListaJustificacionMovPermiso(componente) {
     var lista = ejecutarAjax("controladores/justificacion_permiso.php",
             "dame_activos=1");
 
@@ -275,13 +202,88 @@ function cargarListaJustificacionPermiso(componente) {
     } else {
         var json_lista = JSON.parse(lista);
         json_lista.map(function (item) {
-           fila += `<option value='${item.jus_per_id}'>${item.just_per_de}</option>`;
+            fila += `<option value='${item.jus_per_id}'>${item.just_per_de}</option>`;
         });
 
     }
     $(componente).html(fila);
 }
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+$(document).on("keyup", "#cedula_b", function (evt) {
+    if (evt.keyCode === 13) {
+        if ($(this).val().trim().length === 0) {
+            mensaje_dialogo_info_ERROR("Debes ingresar un numero de cedula", "ERROR");
+            return;
+        }
+
+        let data = ejecutarAjax("controladores/empleado.php", "buscar_cedula=" + $(this).val().trim());
 
 
+        console.log(data);
+
+        if (data === "0") {
+            mensaje_dialogo_info("No se encontro el empleado", "ATENCION");
+        } else {
+            let json_data = JSON.parse(data);
+            $("#nombre_personal").val(json_data[0]['empleado']);
+            $("#id_contrato").val(json_data[0]['con_id']);
+        }
+
+    } else {
+
+    }
+});
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+function cancelarJusMov() {
+    $("#cedula_b").val("");
+    $("#nombre_personal").val("");
+    $("#id_contrado").val("0");
+}
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+$(document).on("change", "#documentos", function (evt) {
+    if ($('#documentos').is(':checked')) {
+        $("#file").remove("readonly");
+    } else {
+        $("#file").attr("readonly", true);
+
+    }
+});
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+function mostrarPDF(id) {
+    var lista = ejecutarAjax("controladores/justificacion.php",
+            "id=" + id);
+    console.log(lista);
+    var json_lista = JSON.parse(lista);
 
 
+    var base64PDF = json_lista[0]['file']; // Reemplaza con tu PDF en base64
+
+    // Función para decodificar la cadena base64 y abrir el PDF en una nueva ventana
+
+    // Decodifica la cadena base64
+    const binaryData = atob(base64PDF);
+
+    // Convierte la cadena binaria en un array de bytes
+    const byteArray = new Uint8Array(binaryData.length);
+    for (let i = 0; i < binaryData.length; i++) {
+        byteArray[i] = binaryData.charCodeAt(i);
+    }
+
+    // Crea un Blob con los datos del PDF
+    const blob = new Blob([byteArray], {type: 'application/pdf'});
+
+    // Crea una URL para el Blob
+    const pdfUrl = URL.createObjectURL(blob);
+
+    // Abre el PDF en una nueva ventana para imprimirlo
+    window.open(pdfUrl);
+}

@@ -16,9 +16,11 @@ function mostrarAgregarContrato() {
     $("#fecha_inicio").attr('min', dameFechaActualSQL());
     $("#fecha_fin").attr('min', dameFechaActualSQL());
     cargarListaDepartamento("#departamento_lst");
+    cargarListaSucursal("#sucursal_lst");
     let clau = dameContenido("paginas/personal/claupsula.php");
     $("#clausula").html(clau);
     actualizarContrato();
+
 
 }
 
@@ -41,7 +43,7 @@ function actualizarContrato() {
     $("#mes").text(dameNombreMes(fecha_actual.split("-")[1]));
     $("#anio").text(fecha_actual.split("-")[0]);
 
-    if ($("#cod_empleado").val().trim().length === 0) {
+    if ($("#cod_curriculum").val().trim().length === 0) {
         $("#nombre").text("");
         $("#edad").text("");
         $("#sexo").text("");
@@ -52,7 +54,7 @@ function actualizarContrato() {
         $("#ciudad").text("");
     } else {
         let personal = ejecutarAjax("controladores/empleado.php",
-                "id=" + $("#cod_empleado").val());
+                "id=" + $("#cod_curriculum").val());
         if (personal !== "0") {
             let json_personal = JSON.parse(personal);
             $("#nombre").text(json_personal[0]['per_nom'] + " " + json_personal[0]['per_apell']);
@@ -149,6 +151,11 @@ function guardarContrato() {
     }
 
 
+    if ($("#sucursal_lst").val() === "0") {
+        mensaje_dialogo_info("Debes seleccionar una sucursal.", "ATENCION");
+        return;
+    }
+
     if ($("#cargo_lst").val() === "0") {
         mensaje_dialogo_info("Debes seleccionar un cargo.", "ATENCION");
         return;
@@ -158,21 +165,45 @@ function guardarContrato() {
         return;
     }
 
+    let cur_existe = ejecutarAjax("controladores/empleado.php",
+            "id_existe=" + $("#cod_curriculum").val());
+
+    if (cur_existe !== '0') {
+        mensaje_dialogo_info("El curriculum ya ha sido registrado  ya ha sido registrado.", "ATENCION");
+        return;
+    }
+    
+     let empleado = {
+            'func_ingreso': $("#fecha_inicio").val(),
+            'cur_id': $("#cod_curriculum").val(),
+            'suc_id': $("#sucursal_lst").val(),
+            'estado': 1
+
+        };
 
 
 
     if ($("#id_contrato").val() === "0") {
+        
+       
 
-        let existe = ejecutarAjax("controladores/contrato.php",
-                "id_func=" + $("#cod_empleado").val());
+//        let existe = ejecutarAjax("controladores/contrato.php",
+//                "id_func=" + $("#cod_empleado").val());
+//
+//        if (existe !== '0') {
+//
+//            mensaje_dialogo_info("El empleado " + $("#nombre_personal").val() + " \n\
+//        tiene un contrato vigente, que vence en la fecha "
+//                    + existe, "ATENCION");
+//            return;
+//        }
+        
+          let cur = ejecutarAjax("controladores/empleado.php",
+                "guardar=" + JSON.stringify(empleado));
 
-        if (existe !== '0') {
-
-            mensaje_dialogo_info("El empleado " + $("#nombre_personal").val() + " \n\
-        tiene un contrato vigente, que vence en la fecha "
-                    + existe, "ATENCION");
-            return;
-        }
+        console.log(cur);
+        let id_empleado = ejecutarAjax("controladores/empleado.php",
+                "ultimoID=1");
 
         let contrato = {
 
@@ -182,14 +213,14 @@ function guardarContrato() {
             'con_salario': quitarDecimalesConvertir($("#salario").val()),
             'car_id': $("#cargo_lst").val(),
             'dep_id': $("#departamento_lst").val(),
-            'func_id': $("#cod_empleado").val(),
+            'func_id': id_empleado,
             'profesion': ($("#obrero").is(":checked")) ? "OBRERO" : "EMPLEADO",
             'con_estado': $("#estado_a").val()
 
         };
 
-         console.log(contrato);
-        let cur = ejecutarAjax("controladores/contrato.php",
+        console.log(contrato);
+        cur = ejecutarAjax("controladores/contrato.php",
                 "guardar=" + JSON.stringify(contrato));
 
         console.log(cur);
@@ -212,7 +243,7 @@ function guardarContrato() {
 
         mensaje_dialogo_info("Guardado Correctamente", "EXITOSO");
 
-        alertify.confirm('ANTENCION', 'Desea imprimir elS contrato?', function () {
+        alertify.confirm('ANTENCION', 'Desea imprimir el contrato?', function () {
             window.open("paginas/personal/imprimirContrato.php?id=" + id);
         }
         , function () {

@@ -22,20 +22,20 @@
 <h6>Detalles de la Bonificación</h6>
 <div class="row">
 
-    <div class="col-md-4">
+    <div class="col-md-4" hidden>
         <label>Fecha de pago </label>
         <input type="date" class="form-control" id="fecha_pago_bonificacion">
     </div>
 
-    <div class="col-md-2">
+    <div class="col-md-3">
         <label>Total de hijos</label>
         <input type="text" id="total_hijos" class="form-control" readonly value="0">
     </div>
-    <div class="col-md-2">
+    <div class="col-md-3">
         <label>Hijos Menores</label>
         <input type="text" id="total_hijos_menores" class="form-control" readonly value="0">
     </div>
-    <div class="col-md-4">
+    <div class="col-md-5">
         <label>Monto total a recibir</label>
         <input type="text" id="monto" class="form-control" readonly value="0">
     </div>

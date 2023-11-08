@@ -83,7 +83,6 @@ $(document).on("keyup", "#cedula_contrato_s", function (evt) {
                 calcularLiquidacion();
 
             }
-           
 
         }
     }
@@ -216,8 +215,8 @@ function guardarLiquidacion() {
         mensaje_dialogo_info("Debes buscar un empleado", "ATENCION");
         return;
     }
+    
 
-   
 
 
 //    let existe_data = {

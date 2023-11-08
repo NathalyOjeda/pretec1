@@ -15,8 +15,7 @@ function guardarMotivoDescuento() {
         descripcion = $("#motivo_descripcion").val();
         activo = $("#motivo_estado").val();
 
-        
-        if (!descripcion || descripcion.trim().length === 0) {
+        if (descripcion.trim().length === 0) {
             mensaje_dialogo_info("DEBE INGRESAR UNA DESCRIPCION" ,
             "ATENCION");
             $("#motivo_descripcion").focus();

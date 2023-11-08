@@ -301,15 +301,6 @@ function agregarDescuento() {
         return;
         
     }
-
-    // Validación para el salario
-    //var salario = $("#cargo_salario").val();
-
-    if (isNaN(monto) || monto.trim() === "" || monto.includes("-")) {
-        alert("NO ACEPTA NUMEROS NEGATIVOS");
-        $("#monto").focus();
-        return;
-    }
     
     let repetido = false;
     $("#descuentos_tb tr").each(function (evt) {

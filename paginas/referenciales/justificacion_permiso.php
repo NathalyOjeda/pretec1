@@ -2,12 +2,12 @@
 <input type="text" id="nombre_antiguo_justificacion_permiso" hidden value="0">
 <div class="card" style="padding: 20px;">
 
-    <h4>Motivo Permiso</h4>
+    <h4>Justificación de Permiso</h4>
     <hr> 
     <div class="row">
         <div class="col-md-5">
             <label>Descripción</label>
-            -- <input type="text" class="form-control" id="justificacion_permiso_descripcion">
+            <input type="text" class="form-control" id="justificacion_permiso_descripcion">
         </div>
         <div class="col-md-3">
             <label>Estado</label>

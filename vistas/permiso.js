@@ -40,14 +40,6 @@ $(document).on("keyup", "#cedula_contrato_b", function (evt) {
             mensaje_dialogo_info("Debes ingresar un número de cédula válido",
                     "ATENCION");
         } else {
-
-            var cedula = $("#cedula_contrato_s").val();
-
-            if (isNaN(cedula) || cedula.trim() === "" || cedula.includes("-")) {
-                alert("NO ACEPTA NUMEROS NEGATIVOS");
-                $("#cedula_contrato_s").focus();
-                return;
-            }
             let funcionario = ejecutarAjax("controladores/contrato.php",
                     "b_cedula=" + $("#cedula_contrato_b").val());
                     console.log(funcionario);

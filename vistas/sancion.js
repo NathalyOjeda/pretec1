@@ -33,17 +33,14 @@ function limpiarBusqueda() {
     $("#id_contrato").val("0");
     $("#cedula_contrato_b").focus();
 }
-//$(document).on("keyup", "#nombre_busqueda_sancion", function (evt) {
-    // agregar ajax 
 
-//}
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 function guardarSancion() {
 
 
-    if ($("#id_contraro").val() === "0") {
+    if ($("#id_contrato").val() === "0") {
         mensaje_dialogo_info("Debes buscar un empleado", "ATENCION");
         return;
     }
@@ -146,8 +143,6 @@ function agregarSancion() {
         return;
     }
 
-    
-
     let fila = "";
     fila += `<tr>`;
     fila += `<td>${motivo}</td>`;
@@ -224,12 +219,6 @@ function buscarSancion() {
 
     }
 }
-
-
-
-
-
-
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------

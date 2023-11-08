@@ -182,7 +182,7 @@
 
                                     <ul class="nav flex-column sub-menu">
                                         <span class="menu-title">Personales</span>
-                                        <li class="nav-item"> <a class="nav-link" href="#" onclick="mostrarPersonal(); return false;" >Datos personales</a></li>
+                                        <li class="nav-item"> <a class="nav-link" href="#" onclick="mostrarPersonal(); return false;" >Personal</a></li>
                                         <li class="nav-item"> <a class="nav-link" href="#" onclick="mostrarEmpleado(); return false;">Empleado</a></li>
                                         <span class="menu-title">Sectores</span>
                                         <li class="nav-item" > <a class="nav-link" href="#" onclick="mostrarDepartamento(); return false;">Departamento</a></li>
@@ -190,8 +190,9 @@
                                         <li class="nav-item"> <a class="nav-link" href="#" onclick="mostrarSucursal(); return false;">Sucursal</a></li>
                                         <span class="menu-title">Adicionales</span>
                                         <li class="nav-item"> <a class="nav-link" href="#" onclick="mostrarMotivoSancion(); return false;">Motivo Sanción</a></li>
+                                        <li class="nav-item"> <a class="nav-link" href="#" onclick="mostrarJustificacionPermiso(); return false;">Motivo Justif. Permiso</a></li>
                                         
-                                        <li class="nav-item"> <a class="nav-link" href="#" onclick="mostrarJustificacionPermiso(); return false;">Motivo Permiso</a></li>
+                                        
                                         <li class="nav-item"> <a class="nav-link" href="#" onclick="mostrarMotivoDescuento(); return false;">Motivo Descuento</a></li>
                                         <li class="nav-item"> <a class="nav-link" href="#" onclick="mostrarConcepto(); return false;">Concepto</a></li>
                                     </ul>
@@ -215,9 +216,9 @@
 
                                     <ul class="nav flex-column sub-menu">
 
-                                        <li class="nav-item"> <a class="nav-link" href="#" onclick="mostrarPerfil(); return false;">Perfil de cargo</a></li>
+                                        <li class="nav-item"> <a class="nav-link" href="#" onclick="mostrarPerfil(); return false;">Perfil</a></li>
                                         <li class="nav-item"> <a class="nav-link" href="#" onclick="mostrarCurriculum(); return false;">Curriculum</a></li>
-                                        
+                                        <li class="nav-item"> <a class="nav-link" href="#" onclick="mostrarSalaroHistorial(); return false;">Salario</a></li>
                                         <li class="nav-item"> <a class="nav-link" href="#" onclick="mostrarContrato(); return false;" >Contrato</a></li>
                                         <li class="nav-item"> <a class="nav-link" href="#" onclick="mostrarAsistencia(); return false;" >Asistencia</a></li>
                                         <li class="nav-item"> <a class="nav-link" href="#" onclick="mostrarDesvinculacion(); return false;" >Desvinculación</a></li>
@@ -246,10 +247,11 @@
                                     <ul class="nav flex-column sub-menu">
 
                                         <li class="nav-item"> <a class="nav-link" href="#" onclick="mostrarPermiso(); return false;">Permisos</a></li>
+                                        <li class="nav-item"> <a class="nav-link" href="#" onclick="mostrarJustificacionMovPermiso(); return false;">Justificación de Permiso</a></li>
                                         <li class="nav-item"> <a class="nav-link" href="#" onclick="mostrarSancion(); return false;">Sanciones</a></li>
                                         <li class="nav-item"> <a class="nav-link" href="#" onclick="mostrarDescuento(); return false;">Descuento</a></li>
-                                        <li class="nav-item"> <a class="nav-link" href="#" onclick="mostrarBonificacion(); return false;">Bonificación Familiar</a></li>
-                                        <li class="nav-item"> <a class="nav-link" href="#" onclick="mostrarIngresos(); return false;">Ingresos Extras</a></li>
+                                        <li class="nav-item"> <a class="nav-link" href="#" onclick="mostrarBonificacion(); return false;">Bonificación</a></li>
+                                        <li class="nav-item"> <a class="nav-link" href="#" onclick="mostrarIngresos(); return false;">Ingresos</a></li>
                                         <li class="nav-item"> <a class="nav-link" href="#" onclick="mostrarVacaciones(); return false;">Vacaciones</a></li>
 
                                     </ul>
@@ -310,7 +312,23 @@
                             <?php
                         }
                         ?>
+                             <li class="nav-item">
+                                <a class="nav-link" data-toggle="collapse" href="#ui-basic6" aria-expanded="false" aria-controls="ui-basic6">
+                                    <i class="ti-help menu-icon"></i>
+                                    <span class="menu-title">Ayuda</span>
+                                    <i class="menu-arrow"></i>
+                                </a>
+                                <div class="collapse" id="ui-basic6">
 
+                                    <ul class="nav flex-column sub-menu">
+
+                                        <li class="nav-item"> <a class="nav-link" target="_blank" href="manual/MANUAL DE SEGURIDAD.pdf" >Manual Técnico</a></li>
+                                        <li class="nav-item"> <a class="nav-link" target="_blank"  href="manual/MANUAL DE USUARIO.pdf" >Manual de Usuario</a></li>
+
+
+                                    </ul>
+                                </div>
+                            </li>
 
                     </ul>
                 </nav>
@@ -347,6 +365,12 @@
         <script src="js/template.js"></script>
         <script src="js/todolist.js"></script>
         <script src="js/alertify/alertify.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" integrity="sha512-q+4liFwdPC/bNdhUpZx6aXDx/h77yEQtn4I1slHydcbZK34nLaR3cAeYSJshoxIOq3mjEf7xJE8YWIUHMn+oCQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.sandbox.min.js" integrity="sha512-NNuF+svYnI7fHo2z2hZWxFjgZTBhXUQRKeLZcIHhN0WJ8i7lhR90ujrWD+LFlAwnMQXoNHaQW0+CwKy9E4BWog==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.entry.min.js" integrity="sha512-NJEHr6hlBM4MkVxJu+7FBk+pn7r+KD8rh+50DPglV/8T8I9ETqHJH0bO7NRPHaPszzYTxBWQztDfL6iJV6CQTw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js" integrity="sha512-BbrZ76UNZq5BhH7LL7pn9A4TKQpQeNCHOo65/akfelcIBbcVvYWOFQKPXIrykE3qZxYjmDX573oa4Ywsc7rpTw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf_viewer.min.css" integrity="sha512-tze+o/xG0w3yxxE8xe32piisVvI/LfcEuf6LW7lFLUxhio2SfFQ9mQ0TqB0avvonmxUXT7/l8+fnWkR03u85fQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf_viewer.min.js" integrity="sha512-r/1hgDCXmxicFJ66QCjMCFl0dEhTBu7kYqoef3OrdHbqrnyhp1V/GhyWQg8Gto8412MUqU8AbMSpc5TLbRURhQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <!-- endinject -->
         <!-- Custom js for this page-->
         <script src="js/dashboard.js"></script>
@@ -356,7 +380,7 @@
         <script src="vistas/cargo.js"></script>
         <script src="vistas/sucursal.js"></script>
         <script src="vistas/motivoSancion.js"></script>
-        <script src="vistas/justificacion_permiso.js"></script>
+        <script src="vistas/justificacion.js"></script>
         <script src="vistas/impresion_referenciales.js"></script>
         <script src="vistas/informes.js"></script>
         <script src="vistas/curriculum.js"></script>
@@ -378,7 +402,8 @@
         <script src="vistas/moment.js"></script>
         <script src="vistas/desvinculacion.js"></script>
         <script src="vistas/perfil.js"></script>
-
+        <script src="vistas/justificacion_permiso.js"></script>
+        <script src="vistas/salario_historial.js"></script>
         <!-- End custom js for this page-->
     </body>
 

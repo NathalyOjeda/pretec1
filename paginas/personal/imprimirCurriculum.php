@@ -213,6 +213,40 @@ if ($query->rowCount()) {
                 </table>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-12">
+                <label>Experiencias laborales</label>
+                <table class="table table-bordered table-striped table-sm">
+                    <thead>
+                        <tr>
+                            <th>EMPRESA</th>
+                            <th>TELEFONO</th>
+                            <th>DESCRIPCION</th>
+                        </tr>
+                    </thead>
+                    <?PHP
+                    $query = $base_datos->conectar()->prepare("SELECT  `empresa`, `telefono`, `descripcion` 
+                FROM `curriculum_exp_laboral` 
+                WHERE `cur_id` =   " . $_GET['id']);
+
+                    $arreglo = array();
+                    $query->execute();
+                    if ($query->rowCount()) {
+
+                        foreach ($query as $fila) {
+                            echo "<tr>";
+                            echo "<td>".$fila['empresa']."</td>";
+                            echo "<td>".$fila['telefono']."</td>";
+                            echo "<td>".$fila['descripcion']."</td>";
+                            echo "</tr>";
+                        }
+                    } else {
+                        
+                    }
+                    ?>
+                </table>
+            </div>
+        </div>
 
 
     </body>

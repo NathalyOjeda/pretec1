@@ -7,15 +7,7 @@
     <div class="row">
         <div class="col-md-5">
             <label>Descripción</label>
-            <!--input type="text" class="form-control" id="motivo_descripcion"-->
-            <select name="Descripción" id="motivo_descripcion" class="form-control">
-                <option value="" disabled selected>Seleccione una opcion</option>
-                <option value="Llegada tardia">Llegada tardia</option>
-                <option value="Sancion">Sancion</option>
-                <option value="No cumplir reglas laborales">No cumplir reglas laborales</option>
-                <option value="Otros">Otros</option>
-            </select>
-
+            <input type="text" class="form-control" id="motivo_descripcion">
         </div>
         <div class="col-md-3">
             <label>Estado</label>

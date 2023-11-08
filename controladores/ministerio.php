@@ -271,3 +271,79 @@ function existeEnMes($lista) {
         echo '0';
     }
 }
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+
+
+if (isset($_POST['paraxmlempleados'])) {
+    paraxmlempleados($_POST['paraxmlempleados']);
+}
+
+function paraxmlempleados() {
+    
+//    $json_datos = json_decode($lista, true);
+    $base_datos = new DB();
+    $query = $base_datos->conectar()->prepare("SELECT 
+			CONCAT(p.cedula,'-', t.con_id) as nro_patronal,
+            p.per_nom,
+            p.per_apell,
+            p.per_nacim,
+            p.per_nacion,
+            p.per_direc,
+            p.cedula,
+            t.con_salario,
+            car.car_descri,
+            if(p.per_genero = 'FEMEMINO', 'F', 'M') AS sexo,
+            if(p.per_est_civ = 'SOLTERO', 'S', 'C') as estado_civil,
+            p.per_nacion,
+            p.per_direc,
+            p.per_nacim,
+            t.profesion,
+             (SELECT
+        COUNT(db.bon_id) as cantidad
+        FROM  det_bonif db 
+        JOIN bonif_filia b 
+        WHERE b.con_id = t.con_id 
+        and YEAR(CURDATE())-YEAR(db.fecha_nacimiento)  < 18) as hijos,
+        if(t.con_fin is null, '-' , t.con_fin ) as con_fin,
+        if(t.motivo_salida is null, '-', t.motivo_salida) as motivo_salida,
+        t.con_emis
+            FROM curriculum c 
+            JOIN personal p 
+            ON p.per_id = c.per_id
+            JOIN empleados e 
+            ON e.cur_id  = c.cur_id
+            JOIN contrato t 
+            ON t.func_id = e.func_id
+            join cargos car 
+            ON car.car_id = t.car_id");
+
+    $query->execute();
+
+    if ($query->rowCount()) {
+        $arreglo = array();
+
+        foreach ($query as $fila) {
+            array_push($arreglo, array(
+                'Nropatronal' => $fila['nro_patronal'],
+                'Documento' => $fila['cedula'],
+                'Nombre' => $fila['per_nom'],
+                'Apellido' => $fila['per_apell'],
+                'Sexo' => $fila['sexo'],
+                'Estadocivil' => $fila['estado_civil'],
+                'Fechanac' => $fila['per_nacim'],
+                'Nacionalidad' => $fila['per_nacion'],
+                'Domicilio' => $fila['per_direc'],
+                'Fechanacmenor' => '',
+                'hijosmenores' => $fila['hijos'],
+                'cargo' => $fila['car_descri'],
+                'profesion' => $fila['profesion'],
+                'fechaentrada' => $fila['con_emis']
+            ));
+        }
+        echo json_encode($arreglo);
+    } else {
+        echo '0';
+    }
+}

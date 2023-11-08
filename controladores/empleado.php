@@ -232,3 +232,43 @@ function desactivar($id) {
 
     $query->execute();
 }
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+
+
+if (isset($_POST['buscar_cedula'])) {
+    buscar_cedula($_POST['buscar_cedula']);
+}
+
+function buscar_cedula($cedula) {
+//    $json_datos = json_decode($lista, true);
+    $base_datos = new DB();
+    $query = $base_datos->conectar()->prepare("SELECT
+    t.con_id,
+    CONCAT(p.per_nom, ' ',p.per_apell) as empleado
+    FROM contrato t 
+    JOIN empleados e 
+    ON e.func_id =  t.func_id
+    JOIN curriculum c 
+    ON c.cur_id =  e.cur_id
+    JOIN personal p 
+    ON p.per_id = c.per_id
+    WHERE p.cedula = $cedula and t.con_estado = 1");
+
+    $query->execute();
+
+    if ($query->rowCount()) {
+        $arreglo = array();
+
+        foreach ($query as $fila) {
+            array_push($arreglo, array(
+                'con_id' => $fila['con_id'],
+                'empleado' => $fila['empleado']
+            ));
+        }
+        echo json_encode($arreglo);
+    } else {
+        echo '0';
+    }
+}

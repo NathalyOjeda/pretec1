@@ -2,8 +2,8 @@ function mostrarIPS() {
     var contenido = dameContenido("paginas/planillas/ips.php");
     $("#contenido-page").html(contenido);
     dameFechaActual("periodo");
-
-
+   
+   
 }
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
@@ -14,7 +14,7 @@ function mostrarAgregarIPS() {
     dameMesActual("fecha");
     $("#fecha").attr("min", dameMesActualSQL());
     cargarGrilla();
-
+    
 
 
 }
@@ -440,4 +440,5 @@ function generarPlanillaIPS2() {
     open("paginas/planillas/imprimirIPS.php?desde_anterior=" + desde_anterior + 
             "&hasta_anterior=" + hasta_anterior+"&desde_actual=" + desde_actual
             +"&hasta_actual=" + hasta_actual+"&periodo_actual=" +$("#periodo").val() );
+    
 }

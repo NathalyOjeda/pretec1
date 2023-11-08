@@ -10,6 +10,8 @@
         <label>Estado</label>
         <select  id="estado" class="form-control">
             <option value="0">SELECCIONA UN ESTADO</option>
+            <option value="PENDIENTE">PENDIENTE</option>
+            <option value="REVISION">REVISION</option>
             <option value="APROVADO">APROVADO</option>
             <option value="RECHAZADO">RECHAZADO</option>
         </select>
@@ -98,6 +100,37 @@
                 </tr>
             </thead>
             <tbody id="ref_laboral_tb" style="max-height: 500px;"> </tbody>
+        </table>
+    </div>
+    <div class="col-md-12" style="margin-top: 30px;">
+    <label>Experiencia Laboral</label><br> 
+    <hr> 
+        
+    </div>
+    
+    <div class="col-md-4">
+        <label>Empresa</label>
+        <input type="text" class="form-control form-control-sm" id="empresa_lab">
+        <label>Telefono</label>
+        <input type="text" class="form-control form-control-sm" id="telefono_exp_lab">
+        <label>Descripción</label>
+        <input type="text" class="form-control form-control-sm" id="descripcion_exp_lab">
+        <button class=" btn btn-success form-control form-control-sm" 
+                onclick="agregarExpLaboral();" style="margin-top: 20px;">Agregar</button>
+ 
+    </div>
+    <div class="col-md-8">
+        <label>Detalles</label>
+        <table class="table table-bordered table-hover table-striped table-sm ">
+            <thead>
+                <tr> 
+                    <th>Empresa</th>
+                    <th>Telefono</th>
+                    <th>Descripcion</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="exp_laboral_tb" style="max-height: 500px;"> </tbody>
         </table>
     </div>
     <div class="col-md-12">

@@ -229,3 +229,29 @@ function cargarListaDepartamento(componente) {
     }
     $(componente).html(fila);
 }
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+$(document).on("click", ".eliminar-departamento", function (evt) {
+    var tr = $(this).closest("tr");
+    var id = $(tr).find("td").filter(":eq(0)").text();
+    alertify.confirm('ATENCION', 'Desea eliminar el registro?',
+            function () {
+                var r = ejecutarAjax
+                        ("controladores/departamento.php",
+                                "eliminar=" + id);
+                console.log(r);
+                if (r.includes("Cannot delete or update a parent row: a foreign key constraint fails")) {
+                    var r = ejecutarAjax
+                            ("controladores/departamento.php",
+                                    "desactivar=" + id);
+                }
+
+                alertify.success('Eliminado');
+                cargarTablaDepartamento();
+            }
+    , function () {
+        alertify.error('Cancelado');
+    });
+});

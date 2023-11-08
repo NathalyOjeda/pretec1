@@ -79,12 +79,12 @@ function guardarCurriculum() {
         mensaje_dialogo_info("Debes buscar un personal", "ATENCION");
         return;
     }
-    
+
     if ($("#descripcion_personal").val().trim().length === 0) {
         mensaje_dialogo_info("Debes buscar una descripción", "ATENCION");
         return;
     }
-    
+
 
 
 
@@ -135,6 +135,18 @@ function guardarCurriculum() {
             };
             let ref_lab = ejecutarAjax("controladores/curriculum_ref_laboral.php",
                     "guardar=" + JSON.stringify(ref));
+
+        });
+        //guardamos las experencia laborales
+        $("#exp_laboral_tb tr").each(function (evt) {
+            let exp = {
+                'cur_id': id,
+                'empresa': $(this).find("td").filter(":eq(0)").text(),
+                'telefono': $(this).find("td").filter(":eq(1)").text(),
+                'descripcion': $(this).find("td").filter(":eq(2)").text()
+            };
+            let exp_lab = ejecutarAjax("controladores/curriculum_exp_laboral.php",
+                    "guardar=" + JSON.stringify(exp));
 
         });
 
@@ -190,6 +202,19 @@ function guardarCurriculum() {
             };
             let ref_lab = ejecutarAjax("controladores/curriculum_ref_laboral.php",
                     "guardar=" + JSON.stringify(ref));
+
+        });
+        
+        //guardamos las experencia laborales
+        $("#exp_laboral_tb tr").each(function (evt) {
+            let exp = {
+                'cur_id': id,
+                'empresa': $(this).find("td").filter(":eq(0)").text(),
+                'telefono': $(this).find("td").filter(":eq(1)").text(),
+                'descripcion': $(this).find("td").filter(":eq(2)").text()
+            };
+            let exp_lab = ejecutarAjax("controladores/curriculum_exp_laboral.php",
+                    "guardar=" + JSON.stringify(exp));
 
         });
 
@@ -321,6 +346,8 @@ $(document).on("click", ".editar-curriculum", function (evt) {
         });
         $("#academico_tb").html(fila);
     }
+    
+    
     let laborales = ejecutarAjax("controladores/curriculum_ref_laboral.php",
             "id=" + id);
 
@@ -339,6 +366,26 @@ $(document).on("click", ".editar-curriculum", function (evt) {
             fila += `</tr>`;
         });
         $("#ref_laboral_tb").html(fila);
+    }
+    
+    let exp_laborales = ejecutarAjax("controladores/curriculum_exp_laboral.php",
+            "id=" + id);
+//     console.log(exp_laborales);
+    if (exp_laborales === "0") {
+
+    } else {
+        let json_exp_laborales = JSON.parse(exp_laborales);
+        let fila = ``;
+
+        json_exp_laborales.map(function (item) {
+            fila += `<tr>`;
+            fila += `<td>${item.empresa}</td>`;
+            fila += `<td>${item.telefono}</td>`;
+            fila += `<td>${item.descripcion}</td>`;
+            fila += `<td><button class="btn-sm btn btn-danger remover-item"><i class="ti ti-close"></i></button></td>`;
+            fila += `</tr>`;
+        });
+        $("#exp_laboral_tb").html(fila);
     }
     
     
@@ -427,13 +474,10 @@ function agregarAcademico() {
                 "ATENCION");
         return;
     }
-
-
     if ($("#periodo").val().trim().length === 0) {
         mensaje_dialogo_info("Debes agregar un periodo para los datos académicos",
                 "ATENCION");
         return;
-
     }
     if ($("#descripcion_academico").val().trim().length === 0) {
         mensaje_dialogo_info("Debes agregar una descripción para los datos académicos",
@@ -483,5 +527,37 @@ function agregarRefLaboral() {
 
 
     $("#ref_laboral_tb").append(fila);
+
+}
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+function agregarExpLaboral() {
+    if ($("#empresa_lab").val().trim().length === 0) {
+        mensaje_dialogo_info("Debes agregar un nombre de empresa  para los datos  de experiencia laboral",
+                "ATENCION");
+        return;
+    }
+    if ($("#telefono_exp_lab").val().trim().length === 0) {
+        mensaje_dialogo_info("Debes agregar un telefono para los datos  de experiencia laboral",
+                "ATENCION");
+        return;
+    }
+    if ($("#descripcion_exp_lab").val().trim().length === 0) {
+        mensaje_dialogo_info("Debes agregar una descripción para los datos  de experiencia laboral",
+                "ATENCION");
+        return;
+    }
+
+    let fila = ``;
+    fila += `<tr>`;
+    fila += `<td>${$("#empresa_lab").val()}</td>`;
+    fila += `<td>${$("#telefono_exp_lab").val()}</td>`;
+    fila += `<td>${$("#descripcion_exp_lab").val()}</td>`;
+    fila += `<td><button class="btn-sm btn btn-danger remover-item"><i class="ti ti-close"></i></button></td>`;
+    fila += `</tr>`;
+
+
+    $("#exp_laboral_tb").append(fila);
 
 }

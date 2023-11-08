@@ -8,7 +8,7 @@
         <label>Cédula</label>
         <input type="number" class="form-control"  id="cedula_contrato_b">
     </div>
-     <div class="col-md-6 ">
+     <div class="col-md-6">
         <label>Nombre</label>
         <input type="text" class="form-control"  id="nombre_contrato" onkeypress="return soloTexto(event);">
     </div>
@@ -16,21 +16,13 @@
         <label>.</label>
         <button class="btn btn-danger form-control cancelar-btn" onclick="limpiarBusqueda(); return false;">Limpiar</button>
     </div>
-
-    <div class="col-md-3">
-        <label for="nombre_busqueda">Buscar por nombre</label>
-        <input type="text" id="nombre_busqueda_sancion" class="form-control" placeholder="Nombre del empleado">
-    </div>
-</div>
-
-
    
 </div>
     <hr>
     <h6>Detalles de la Sanción</h6>
 <div class="row">
     
-    <div class="col-md-3 mb-2">
+    <div class="col-md-3">
         <label>Fecha </label>
         <input type="date" class="form-control" id="fecha_sancion">
     </div>

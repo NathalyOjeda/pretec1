@@ -84,13 +84,13 @@ function buscarTipoMarcacion() {
     let data = {
         'id' : $("#id_contrato").val(),
         'fecha' : dameFechaActualSQL()
-    }
+    };
     let cantidad = ejecutarAjax("controladores/asistencia.php",
             "total_asistencia=" + JSON.stringify(data));
             console.log(cantidad);
             
     if(parseInt(cantidad) >= 2){
-        mensaje_dialogo_info("Exedio el limite de 4 marcaciones en el día", "ATENCION");
+        mensaje_dialogo_info("Exedio el limite de 4 marcaciones en el día", "ANTENCION");
         return;
     }
     
@@ -102,7 +102,7 @@ function buscarTipoMarcacion() {
 
         }
         , function () {
-            alertify.error('Cancelado')
+            alertify.error('Cancelado');
         });
     } else {
         $("#tipo_marcacion").text("SALIDA");
