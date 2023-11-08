@@ -340,6 +340,11 @@ function generarPlanillaMinisterio2() {
 
         open("paginas/planillas/imprimirPlanillaMinisterio.php");
     }
+    
+    if ($("#tipo_ministerio").val() === "2") {
+
+        open("paginas/planillas/ministerio-sueldos-jornales.php");
+    }
 
 }
 //---------------------------------------------------------------------------
@@ -384,7 +389,7 @@ function xmlEmpleados() {
 
     let xml = (OBJtoXML(JSON.parse(data)));
 
-    let filename = 'people.xml';
+    let filename = 'empleados.xml';
     let text = '<?xml version="1.0"?>'+xml;
 
     let element = document.createElement('a');
@@ -398,3 +403,19 @@ function xmlEmpleados() {
 
     document.body.removeChild(element);
 }
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+$(document).on("change", "#tipo_ministerio", function (evt) {
+    if($("#tipo_ministerio").val() === "2"){
+        $("#anio").removeAttr("readonly");
+        $("#anio").focus();
+        let anio =  dameFechaActualSQL().split("-")[0];
+        $("#anio").val(anio);
+        
+    }else{
+        $("#anio").attr("readonly", true);
+        $("#anio").val("");
+        
+    }
+});
