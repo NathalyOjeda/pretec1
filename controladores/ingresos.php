@@ -197,7 +197,7 @@ function segun_mes($lista) {
     $json_datos = json_decode($lista, true);
     $base_datos = new DB();
     $query = $base_datos->conectar()->prepare("SELECT
-if(SUM(i.monto) is null, 0, SUM(i.monto)) as total
+if(SUM(i.monto * i.cantidad_horas) is null, 0, SUM(i.monto * i.cantidad_horas)) as total
 FROM ingresos i
 WHERE i.con_id =  ".$json_datos['con_id'].
             " and  date_format(i.fecha, \"%Y-%m\")  = '".$json_datos['fecha']."' "
