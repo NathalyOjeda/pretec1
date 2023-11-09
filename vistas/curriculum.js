@@ -567,8 +567,21 @@ function nuevoPersonalDC(){
     var modal = dameContenido("paginas/modal-generico.php");
     $(".contenedor_modal").html(modal);
     $("#contenido-modal").html(contenido);
+    $("#modal-generico").addClass("curriculum-personal");
     $("#modal-generico").modal("show");
     
     dameFechaActual("personal_fecha_nacimiento");
     cargarTablaPersonal();
 }
+
+$(document).on('hidden.bs.modal', '.curriculum-personal' , function () {
+      // Coloca aquí el código que deseas ejecutar cuando se cierra el modal
+       var lista = ejecutarAjax("controladores/personal.php",
+            "ultimo_registro=1");
+       let json_lista = JSON.parse(lista);
+       $("#cod_personal").val(json_lista[0]['per_id']);
+       $("#nombre_personal").val(json_lista[0]['per_nom']);
+       $("#apellido_personal").val(json_lista[0]['per_apell']);
+       $("#cedula_personal").val(json_lista[0]['cedula']);
+      // Puedes agregar más acciones aquí...
+    });

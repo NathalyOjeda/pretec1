@@ -109,6 +109,49 @@ function dameTodo() {
         echo '0';
     }
 }
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+
+
+if (isset($_POST['ultimo_registro'])) {
+    ultimo_registro();
+}
+
+function ultimo_registro() {
+//    $json_datos = json_decode($lista, true);
+    $base_datos = new DB();
+    $query = $base_datos->conectar()->prepare("SELECT `per_id`, `per_apell`, "
+            . "`per_nom`, `per_nacim`, `per_direc`, `per_genero`,"
+            . " `per_ciud`, `per_nacion`, `per_est_civ`, `per_correo`,"
+            . " `per_telfono`, cedula FROM `personal` ORDER BY per_id DESC limit 1");
+
+    $query->execute();
+
+    if ($query->rowCount()) {
+        $arreglo = array();
+
+        foreach ($query as $fila) {
+            array_push($arreglo, array(
+                'per_id' => $fila['per_id'],
+                'per_apell' => $fila['per_apell'],
+                'per_nom' => $fila['per_nom'],
+                'cedula' => $fila['cedula'],
+                'per_nacim' => $fila['per_nacim'],
+                'per_direc' => $fila['per_direc'],
+                'per_genero' => $fila['per_genero'],
+                'per_ciud' => $fila['per_ciud'],
+                'per_nacion' => $fila['per_nacion'],
+                'per_est_civ' => $fila['per_est_civ'],
+                'per_correo' => $fila['per_correo'],
+                'per_telfono' => $fila['per_telfono']
+            ));
+        }
+        echo json_encode($arreglo);
+    } else {
+        echo '0';
+    }
+}
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
