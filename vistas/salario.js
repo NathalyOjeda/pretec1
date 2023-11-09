@@ -112,6 +112,9 @@ function calcularLiquidacion() {
             }
         });
         console.log(cantidad_boni);
+        if(cantidad_boni > 3){
+                cantidad_boni = 3;
+            }
         let monto_bonificacion = (sueldo_minimo * 0.05) * cantidad_boni;
         $("#bonificacion").val(formatearNumero(monto_bonificacion));
         

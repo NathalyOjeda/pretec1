@@ -499,8 +499,8 @@ function enviarSolicitud() {
 
     let data = {
         'vac_dias': dias,
-        'vac_salida': $("#fecha_desde").val(),
-        'vac_fin': $("#fecha_hasta").val(),
+        'vac_salida': $("#fecha_desde_va").val(),
+        'vac_fin': $("#fecha_hasta_va").val(),
         'vac_estado': 'PENDIENTE',
         'con_id': $("#id_contrato").val()
 

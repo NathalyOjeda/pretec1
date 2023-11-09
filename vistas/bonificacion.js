@@ -319,6 +319,10 @@ function buscarDatosBonificacion() {
                     cantidad_boni++;
                 }
             });
+            
+            if(cantidad_boni > 3){
+                cantidad_boni = 3;
+            }
 
             let monto = (sueldo_minimo * 0.05) * cantidad_boni;
             $("#total_hijos").val(cantidad_total);
