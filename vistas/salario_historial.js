@@ -38,7 +38,10 @@ function guardarHistorialSalario() {
     
 
 
-   
+   if(quitarDecimalesConvertir($("#salario_anterior").val()) >= quitarDecimalesConvertir($("#salario").val())){
+       mensaje_dialogo_info("El salario nuevo no puede ser menor o igual al salario anterior", "ATENCION");
+        return;
+   }
 
 
         let salario = {
