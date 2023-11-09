@@ -93,34 +93,32 @@ function registroPorID($id) {
     }
 }
 
-if (isset($_POST['id_contrato'])) {
-    registroPorID($_POST['id_contrato']);
+if (isset($_POST['pagadas'])) {
+    pagadas($_POST['pagadas']);
 }
 
-function registroPorID($id) {
-//    $json_datos = json_decode($lista, true);
+function pagadas($lista) {
+    $json_datos = json_decode($lista, true);
     $base_datos = new DB();
     $query = $base_datos->conectar()->prepare("SELECT 
-        v.vac_dias,
-        v.vac_id,
-        v.vac_salida,
-        v.vac_fin,
-        v.vac_estado
+        SUM(v.vac_dias) AS dias
+        
         FROM vacaciones v 
-        WHERE v.con_id = $id order by v.vac_estado DESC");
+        WHERE v.con_id = :id and v.vac_salida between :desde and :hasta and v.vac_estado = 'CONFIRMADO' order by v.vac_estado DESC");
 
-    $query->execute();
+    $query->execute([
+        "id" => $json_datos['id_contrato'],
+        "desde" => $json_datos['desde'],
+        "hasta"=> $json_datos['hasta']
+    ]);
 
     if ($query->rowCount()) {
         $arreglo = array();
 
         foreach ($query as $fila) {
             array_push($arreglo, array(
-                'vac_dias' => $fila['vac_dias'],
-                'vac_id' => $fila['vac_id'],
-                'vac_salida' => $fila['vac_salida'],
-                'vac_fin' => $fila['vac_fin'],
-                'vac_estado' => $fila['vac_estado']
+                'dias' => $fila['dias'],
+                
             ));
         }
         echo json_encode($arreglo);

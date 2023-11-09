@@ -144,10 +144,11 @@ function calcularLiquidacion() {
             "id=" + $("#id_contrato").val());
 
     let json_contrato = JSON.parse(contrato);
+    
 
 
     $("#salario_actual").val(formatearNumero($("#salario").val()));
-
+    let sal_actual = quitarDecimalesConvertir($("#salario").val());
 
     //cargamos los descuentos
     let des_filtros = {
@@ -193,7 +194,24 @@ function calcularLiquidacion() {
         'hasta': $("#mes_liquidacion").val() + "-31"
     };
     let vacaciones = ejecutarAjax("controladores/vacaciones.php",
-            "pagadas=" + id);
+            "pagadas=" + JSON.stringify(des_filtros));
+            console.log(vacaciones);
+    if(vacaciones === "0"){
+        
+    }else{
+        let json_va =  JSON.parse(vacaciones);
+        
+        let dias =  quitarDecimalesConvertir(json_va[0]['dias']);
+        let fila = `<tr class="descuento">
+                        <td>Vacaciones</td>
+                        <td><input type="text" class="form-control ingreso" readonly value="${formatearNumero(Math.round(dias * (sal_actual / 30)))}"></td>
+                        <td>-</td>
+                    </tr>`;
+         $("#liquidacion_tb").append(fila);
+        
+    }
+            
+            
 
     
 
