@@ -183,6 +183,17 @@ function calcularLiquidacion() {
     "total_horas="+JSON.stringify(p_horas));
     
     $("#horas").val(horas);
+    
+    //vacaciones
+    
+    //cargamos los descuentos
+    des_filtros = {
+        'id_contrato': $("#id_contrato").val(),
+        'desde': $("#mes_liquidacion").val() + "-01",
+        'hasta': $("#mes_liquidacion").val() + "-31"
+    };
+    let vacaciones = ejecutarAjax("controladores/vacaciones.php",
+            "pagadas=" + id);
 
     
 

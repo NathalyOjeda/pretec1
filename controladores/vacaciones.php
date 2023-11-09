@@ -92,6 +92,42 @@ function registroPorID($id) {
         echo '0';
     }
 }
+
+if (isset($_POST['id_contrato'])) {
+    registroPorID($_POST['id_contrato']);
+}
+
+function registroPorID($id) {
+//    $json_datos = json_decode($lista, true);
+    $base_datos = new DB();
+    $query = $base_datos->conectar()->prepare("SELECT 
+        v.vac_dias,
+        v.vac_id,
+        v.vac_salida,
+        v.vac_fin,
+        v.vac_estado
+        FROM vacaciones v 
+        WHERE v.con_id = $id order by v.vac_estado DESC");
+
+    $query->execute();
+
+    if ($query->rowCount()) {
+        $arreglo = array();
+
+        foreach ($query as $fila) {
+            array_push($arreglo, array(
+                'vac_dias' => $fila['vac_dias'],
+                'vac_id' => $fila['vac_id'],
+                'vac_salida' => $fila['vac_salida'],
+                'vac_fin' => $fila['vac_fin'],
+                'vac_estado' => $fila['vac_estado']
+            ));
+        }
+        echo json_encode($arreglo);
+    } else {
+        echo '0';
+    }
+}
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
