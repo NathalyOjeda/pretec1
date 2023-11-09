@@ -192,6 +192,7 @@
                                         <li class="nav-item"> <a class="nav-link" href="#" onclick="mostrarMotivoSancion(); return false;">Motivo Sanción</a></li>
                                         <li class="nav-item"> <a class="nav-link" href="#" onclick="mostrarJustificacionPermiso(); return false;">Motivo Justif. Permiso</a></li>
                                         <li class="nav-item"> <a class="nav-link" href="#" onclick="mostrarMotivoDesvinculacion(); return false;">Motivo Desvinculacion</a></li>
+                                        <li class="nav-item"> <a class="nav-link" href="#" onclick="mostrarPreaviso(); return false;">Pre-Aviso</a></li>
                                         
                                         
                                         <li class="nav-item"> <a class="nav-link" href="#" onclick="mostrarMotivoDescuento(); return false;">Motivo Descuento</a></li>
@@ -406,6 +407,7 @@
         <script src="vistas/justificacion_permiso.js"></script>
         <script src="vistas/salario_historial.js"></script>
         <script src="vistas/motivoDesvinculacion.js"></script>
+        <script src="vistas/preaviso.js"></script>
         <!-- End custom js for this page-->
     </body>
 
