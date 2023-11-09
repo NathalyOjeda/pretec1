@@ -108,6 +108,55 @@ ORDER BY p.id_preaviso desc
         echo '0';
     }
 }
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+
+
+if (isset($_POST['dame_activo'])) {
+    dame_activo($_POST['dame_activo']);
+}
+
+function dame_activo($id) {
+//    $json_datos = json_decode($lista, true);
+    $base_datos = new DB();
+    $query = $base_datos->conectar()->prepare("SELECT 
+p.id_preaviso,
+p.id_motivo, 
+p.dias, 
+p.desde,
+p.hasta, 
+p.tipo, 
+IF(p.estado = 1, 'ACTIVO','INACTIVO') as estado,
+m.descripcion as  motivo
+FROM preaviso p
+JOIN motivo_desvinculacion m 
+ON m.id_motivo_desvinculacion = p.id_motivo
+WHERE p.con_id = $id and p.estado = 1
+ORDER BY p.id_preaviso desc
+");
+
+    $query->execute();
+
+    if ($query->rowCount()) {
+        $arreglo = array();
+
+        foreach ($query as $fila) {
+            array_push($arreglo, array(
+                'id_preaviso' => $fila['id_preaviso'],
+                'dias' => $fila['dias'],
+                'desde' => $fila['desde'],
+                'hasta' => $fila['hasta'],
+                'tipo' => $fila['tipo'],
+                'motivo' => $fila['motivo'],
+                'estado' => $fila['estado']
+            ));
+        }
+        echo json_encode($arreglo);
+    } else {
+        echo '0';
+    }
+}
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------

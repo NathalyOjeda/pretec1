@@ -49,10 +49,10 @@ function guardarDesvinculacion() {
     let existe = ejecutarAjax("controladores/desvinculacion.php",
             "id_contrato=" + $("#id_contrato").val());
 
-            console.log(existe);
+    console.log(existe);
     if (existe !== "0") {
-        mensaje_dialogo_info("El Empleado ("+$("#nombre_contrato").val()+") ya ha sido desvinculado anteriormente.",
-        "ATENCION");
+        mensaje_dialogo_info("El Empleado (" + $("#nombre_contrato").val() + ") ya ha sido desvinculado anteriormente.",
+                "ATENCION");
         return;
     }
 
@@ -186,7 +186,7 @@ function buscarDesvinculacion() {
         };
         let desvinculacion = ejecutarAjax("controladores/desvinculacion.php",
                 "b_filtros=" + JSON.stringify(filtro));
-               console.log(desvinculacion);
+        console.log(desvinculacion);
         if (desvinculacion === "0") {
             $("#contrato_tb").html("NO HAY RESULTADOS");
         } else {
@@ -196,7 +196,7 @@ function buscarDesvinculacion() {
                 fila += `<tr>`;
                 fila += `<td>${item.id_desvinculacion}</td>`;
                 fila += `<td>${item.fecha_desvinculacion}</td>`;
-                fila += `<td>${((item.justificado === 1) ? 'SI': 'NO')}</td>`;
+                fila += `<td>${((item.justificado === 1) ? 'SI' : 'NO')}</td>`;
                 fila += `<td>${item.descripcion}</td>`;
                 fila += `<td>${formatearNumero(item.total_liquidacion)}</td>`;
                 fila += `<td>${item.estado}</td>`;
@@ -296,14 +296,43 @@ function buscarDatosDesvinculacion() {
         $("#fecha_inicio").val(json_contrato[0]['con_emis']);
         let inicio = parseInt(json_contrato[0]['con_emis'].split("-")[0]);
         let actual = parseInt($("#fecha_desvinculacion").val().split("-")[0]);
+        let antiguedad = actual - inicio;
         $("#antiguedad").val(actual - inicio);
         $("#salario").val(formatearNumero(json_contrato[0]['con_salario']));
         $("#salario_dias_trabajados").text(formatearNumero(json_contrato[0]['con_salario']));
         $("#salario-dia").val(formatearNumero(Math.round(parseInt(json_contrato[0]['con_salario']) / 20)));
         let salario = parseInt(json_contrato[0]['con_salario']);
+        let salario_dia = salario / 30;
         $("#trabajado").val(dias_laborales(json_contrato[0]['con_emis'], $("#fecha_desvinculacion").val()));
         $("#indemnizacion").text(formatearNumero(Math.round(salario * 0.26)));
-        $("#preaviso").text(formatearNumero(Math.round(salario * 0.05)));
+        //calculo de pre aviso
+        var pre = ejecutarAjax("controladores/preaviso.php",
+                "dame_activo=" + $("#id_contrato").val());
+        if (pre === "0") {
+            let antiguedad = actual - inicio;
+            let dias = 0;
+            if (antiguedad <= 1) {
+                dias = 30;
+            }
+            if (antiguedad <= 5 && antiguedad > 1) {
+                dias = 45;
+            }
+            if (antiguedad <= 10 && antiguedad > 5) {
+                dias = 60;
+            }
+            if (antiguedad > 10) {
+                dias = 90;
+            }
+            
+            dias = dias / 2;
+            
+             $("#preaviso").text("-"+formatearNumero(Math.round(salario_dia * dias)));
+        }else{
+            let json_pre =  JSON.parse(pre);
+            let dias = parseInt(json_pre[0]['dias']);
+            $("#preaviso").text(formatearNumero(Math.round(salario_dia * dias)));
+        }
+        
         //aguinaldo
         let salario_mensual = salario / 12;
         $("#aguinaldo").text(formatearNumero(Math.round(salario_mensual * parseInt($("#fecha_desvinculacion").val().split("-")[1]))));
