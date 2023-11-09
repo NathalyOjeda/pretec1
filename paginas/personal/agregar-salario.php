@@ -7,7 +7,7 @@
     
     <div class="col-md-4">
         <label>Cédula de Identidad</label>
-        <input type="text" class="form-control" id="cedula_b">
+        <input type="text" class="form-control salario_historial" id="cedula_b">
     </div>
     <div class="col-md-5">
         <label>Nombre Apellido</label>
@@ -26,14 +26,19 @@
     <h6>Detalles del salario</h6>
 <div class="row">
     
-    <div class="col-md-6">
+    <div class="col-md-4">
         <label>Fecha</label>
         <input type="date" class="form-control" id="fecha">
     </div>
    
     
-     <div class="col-md-6">
-        <label>Salario</label>
+     <div class="col-md-4">
+        <label>Salario Actual</label>
+        <input type="text" class="form-control" readonly   id="salario_anterior">
+    </div>
+    
+     <div class="col-md-4">
+        <label>Salario Nuevo</label>
         <input type="text" class="form-control"  id="salario">
     </div>
     

@@ -353,6 +353,7 @@
             </div>
             <!-- page-body-wrapper ends -->
         </div>
+        <div class="contenedor_modal"> </div>
         <!-- container-scroller -->
 
         <!-- plugins:js -->

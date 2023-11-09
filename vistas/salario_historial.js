@@ -131,3 +131,11 @@ $(document).on("click", ".eliminar-historial", function (evt) {
     });
 
 });
+$(document).on("keyup", ".salario_historial", function (evt) {
+    if($("#id_contrato").val() !== "0"){
+        let data = ejecutarAjax("controladores/contrato.php", "id="+$("#id_contrato").val());
+        let json_data = JSON.parse(data);
+        $("#salario_anterior").val(formatearNumero(json_data[0]['con_salario']));
+        
+    }
+});

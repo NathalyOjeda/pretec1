@@ -561,3 +561,14 @@ function agregarExpLaboral() {
     $("#exp_laboral_tb").append(fila);
 
 }
+
+function nuevoPersonalDC(){
+    var contenido = dameContenido("paginas/referenciales/personal.php");
+    var modal = dameContenido("paginas/modal-generico.php");
+    $(".contenedor_modal").html(modal);
+    $("#contenido-modal").html(contenido);
+    $("#modal-generico").modal("show");
+    
+    dameFechaActual("personal_fecha_nacimiento");
+    cargarTablaPersonal();
+}

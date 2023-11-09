@@ -1,5 +1,6 @@
 <input type="text" id="id_contrato" value="0" hidden>
 <h3>Busqueda de Aportes de I.P.S.</h3>
+
 <div class="row">
     <div class="col-md-2">
         <label>Cédula</label>
